@@ -1,16 +1,16 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ChaveService } from './chave.service';
 import { CreateChaveDto } from './dto/create-chave.dto';
 import { UpdateChaveDto } from './dto/update-chave.dto';
-import { ApiTags } from '@nestjs/swagger';
 
 @Controller('chave')
 @ApiTags('Chave NF-e')
