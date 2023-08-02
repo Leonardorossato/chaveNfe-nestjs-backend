@@ -11,23 +11,23 @@ export class Chave {
   @Column({ nullable: false, length: 4 })
   dataDeEmissao: string;
 
-  @Column({ nullable: false, length: 14 })
-  cnpj: string;
+  @Column({ nullable: false })
+  cnpj: number;
 
-  @Column({ nullable: false, length: 2 })
+  @Column({ nullable: false, length: 20 })
   modeloNFe: string;
 
-  @Column({ nullable: false, length: 3 })
-  serie: string;
+  @Column({ nullable: false })
+  serie: number;
 
-  @Column({ nullable: false, length: 9 })
-  numeroNfe: string;
+  @Column({ nullable: false })
+  numeroNfe: number;
 
   @Column({ nullable: false, length: 2 })
   tipoEmissao: string;
 
-  @Column({ nullable: false, length: 8 })
-  codNumerico: string;
+  @Column({ nullable: false })
+  codNumerico: number;
 
   @Column({ length: 44 })
   chaveNfe?: string;
@@ -36,5 +36,5 @@ export class Chave {
   dvInformado?: string;
 
   @Column()
-  dvCalculado: string;
+  dvCalculado?: string;
 }

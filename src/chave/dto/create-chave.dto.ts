@@ -77,11 +77,11 @@ export class CreateChaveDto {
     }
   }
 
-  @ApiProperty()
-  dataDeEmissao: Date;
+  @ApiProperty({ minLength: 6, maxLength: 6 })
+  dataDeEmissao: string;
 
-  @ApiProperty({ maxLength: 14, name: 'CNPJ' })
-  cnpj: string;
+  @ApiProperty({ maxLength: 14 })
+  cnpj: number;
 
   @ApiProperty({
     enum: Object.values(nFEEnum),
@@ -100,10 +100,10 @@ export class CreateChaveDto {
     }
   }
 
-  @ApiProperty()
-  serie: string;
+  @ApiProperty({ minLength: 1, maxLength: 3 })
+  serie: number;
 
-  @ApiProperty()
+  @ApiProperty({ minLength: 1, maxLength: 20 })
   numeroNfe: number;
 
   @ApiProperty({
@@ -123,6 +123,6 @@ export class CreateChaveDto {
     }
   }
 
-  @ApiProperty()
+  @ApiProperty({ minLength: 1, maxLength: 8 })
   codigoNumerico: number;
 }
