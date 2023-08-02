@@ -19,7 +19,7 @@ export class ChaveController {
 
   @Post('/create')
   async create(@Body() createChaveDto: CreateChaveDto) {
-    return this.chaveService.create(createChaveDto);
+    return await this.chaveService.create(createChaveDto);
   }
 
   @Get('/all')

@@ -12,8 +12,18 @@ export class ChaveService {
     private readonly chaveNfeRepository: Repository<Chave>,
   ) {}
 
-  create(dto: CreateChaveDto) {
-    return 'This action adds a new chave';
+  async create(dto: CreateChaveDto) {
+    try {
+      const chave = await this.chaveNfeRepository.create(dto);
+      await this.chaveNfeRepository.save(chave);
+      return chave;
+    } catch (error) {
+      throw new HttpException(
+        'Erro ao criar a chave eletronica',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        error,
+      );
+    }
   }
 
   async findAll() {
