@@ -29,19 +29,19 @@ export const ufs: { uf: string; codigo: number }[] = [
   { uf: 'TO', codigo: 17 },
 ];
 
-export const nFE: { nFE: string; codigo: number }[] = [
-  { nFE: 'NF-e', codigo: 55 },
-  { nFE: 'MDF-e', codigo: 58 },
-  { nFE: 'NFC-e', codigo: 65 },
-  { nFE: 'CT-e', codigo: 57 },
+export const notaFiscal: { nFE: string; codigoNfe: number }[] = [
+  { nFE: 'NF-e', codigoNfe: 55 },
+  { nFE: 'MDF-e', codigoNfe: 58 },
+  { nFE: 'NFC-e', codigoNfe: 65 },
+  { nFE: 'CT-e', codigoNfe: 57 },
 ];
 
-export const tipoEmissao: { tipoEmissao: string; codigo: number }[] = [
-  { tipoEmissao: 'Normal', codigo: 1 },
-  { tipoEmissao: 'Contigencia Fs', codigo: 2 },
-  { tipoEmissao: 'Contigencia SCAN', codigo: 3 },
-  { tipoEmissao: 'Contigencia DPEC', codigo: 4 },
-  { tipoEmissao: 'Contigencia FS-DA', codigo: 5 },
-  { tipoEmissao: 'Contigencia SVC-AN', codigo: 6 },
-  { tipoEmissao: 'Contigencia SCV-RS', codigo: 7 },
+export const tipoEmissao: { tipoEmissao: string; codigoEmissao: number }[] = [
+  { tipoEmissao: 'Normal', codigoEmissao: 1 },
+  { tipoEmissao: 'Contigencia Fs', codigoEmissao: 2 },
+  { tipoEmissao: 'Contigencia SCAN', codigoEmissao: 3 },
+  { tipoEmissao: 'Contigencia DPEC', codigoEmissao: 4 },
+  { tipoEmissao: 'Contigencia FS-DA', codigoEmissao: 5 },
+  { tipoEmissao: 'Contigencia SVC-AN', codigoEmissao: 6 },
+  { tipoEmissao: 'Contigencia SCV-RS', codigoEmissao: 7 },
 ];
