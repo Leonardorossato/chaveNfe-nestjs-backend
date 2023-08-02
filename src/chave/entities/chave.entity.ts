@@ -29,6 +29,12 @@ export class Chave {
   @Column({ nullable: false, length: 8 })
   codNumerico: string;
 
+  @Column({ length: 44 })
+  chaveNfe?: string;
+
   @Column()
-  cDV?: string;
+  dvInformado?: string;
+
+  @Column()
+  dvCalculado: string;
 }
