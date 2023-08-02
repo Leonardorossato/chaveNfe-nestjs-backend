@@ -12,7 +12,7 @@ export class ChaveService {
     private readonly chaveNfeRepository: Repository<Chave>,
   ) {}
 
-  create(createChaveDto: CreateChaveDto) {
+  create(dto: CreateChaveDto) {
     return 'This action adds a new chave';
   }
 
