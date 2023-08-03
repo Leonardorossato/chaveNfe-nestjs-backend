@@ -31,12 +31,6 @@ export class Chave {
   @Column()
   chaveNfe?: string;
 
-  @Column({ nullable: true })
-  dvInformado?: string;
-
-  @Column({ nullable: true })
-  dvCalculado?: string;
-
   gerarChaveNfe(): void {
     const ufNumerico = this.geUfCodigo(this.uf);
 
@@ -49,7 +43,9 @@ export class Chave {
     // Conversão do tipoDeEmissao para um número
     const tipoDeEmissaoNumerico = this.getTipoDeEmissao(this.tipoEmissao);
 
-    this.chaveNfe = `${ufNumerico}${this.dataDeEmissao}${cnpjNumerico}${modeloNfeNumerico}${this.serie}${this.numeroNfe}${tipoDeEmissaoNumerico}${this.codNumerico}`;
+    const chaveSemDigito = `${ufNumerico}${this.dataDeEmissao}${cnpjNumerico}${modeloNfeNumerico}${this.serie}${this.numeroNfe}${tipoDeEmissaoNumerico}${this.codNumerico}`;
+    const dvCalculado = this.calcularDigitoVerificador(chaveSemDigito);
+    this.chaveNfe = `${chaveSemDigito}${dvCalculado}`;
   }
 
   private geUfCodigo(uf: string) {
@@ -117,5 +113,26 @@ export class Chave {
       throw new Error(`Código do tipo de emissão "${tpm}" não encontrado.`);
     }
     return conversaoEmissao;
+  }
+
+  private calcularDigitoVerificador(chaveSemDigito: string): string {
+    let soma = 0;
+    const multiplicadores = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    for (let i = chaveSemDigito.length - 1; i >= 0; i--) {
+      const digito = parseInt(chaveSemDigito.charAt(i), 10);
+      soma +=
+        digito *
+        multiplicadores[multiplicadores.length - chaveSemDigito.length + i];
+    }
+
+    const resto = soma % 11;
+    let dvCalculado = 11 - resto;
+
+    if (dvCalculado === 0 || dvCalculado === 1) {
+      dvCalculado = 0;
+    }
+
+    return dvCalculado.toString();
   }
 }
