@@ -15,8 +15,8 @@ export class ChaveService {
   async create(dto: CreateChaveDto) {
     try {
       const chave = await this.chaveNfeRepository.create(dto);
-      await this.chaveNfeRepository.save(chave);
-      return chave;
+      chave.gerarChaveNfe();
+      return await this.chaveNfeRepository.save(chave);
     } catch (error) {
       throw new HttpException(
         'Erro ao criar a chave eletronica',
