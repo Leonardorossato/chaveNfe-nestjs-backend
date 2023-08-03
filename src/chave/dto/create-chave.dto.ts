@@ -143,4 +143,7 @@ export class CreateChaveDto {
   @Length(6, 6)
   @Transform(({ value }) => value.padStart(6, '0'))
   codNumerico: number;
+
+  @ApiProperty({ nullable: true })
+  dvCalculado?: number;
 }
