@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ufs } from '../interface/chave.interface';
-import { notaFiscal } from '../interface/chave.interface';
-import { tipoEmissao } from '../interface/chave.interface';
+import { ufs, notaFiscal, tipoEmissao } from '../interface/chave.interface';
+import { IsEnum, IsNotEmpty, IsNumberString, Length } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 enum UFEnum {
   AC = 'AC',
@@ -55,14 +55,15 @@ export class CreateChaveDto {
     enum: Object.values(UFEnum),
     enumName: 'UFEnum',
   })
+  @IsEnum(UFEnum)
   uf: UFEnum;
   codigo: number;
 
   constructor() {
     // Inicialize as propriedades UF e Codigo com valores padrão ou deixe-as como undefined
     this.uf = undefined;
-    this.notas = undefined;
-    this.tipo = undefined;
+    this.modeloNFe = undefined;
+    this.tipoEmissao = undefined;
     this.codigoEmissao = 0;
     this.codigoNfe = 0;
     this.codigo = 0;
@@ -77,21 +78,30 @@ export class CreateChaveDto {
     }
   }
 
-  @ApiProperty({ minLength: 6, maxLength: 6 })
+  @ApiProperty({ format: 'mm/yyyy' })
+  @Transform(({ value }) => {
+    const date = new Date(value);
+    const month = date.getUTCMonth() + 1; // UTC month starts from 0
+    const year = date.getUTCFullYear() % 100; // Use the last two digits of the year
+    return `${String(month).padStart(2, '0')}${String(year).padStart(2, '0')}`;
+  })
   dataDeEmissao: string;
 
-  @ApiProperty({ maxLength: 14 })
-  cnpj: number;
+  @ApiProperty({ format: '99.999.999/9999-99' })
+  @Length(18, 18)
+  @Transform(({ value }) => value.replace(/[.-\/]/g, ''))
+  cnpj: string;
 
   @ApiProperty({
     enum: Object.values(nFEEnum),
     enumName: 'nFEEnum',
   })
-  notas: nFEEnum;
+  @IsEnum(nFEEnum)
+  modeloNFe: nFEEnum;
   codigoNfe: number;
 
   setNfe(notas: nFEEnum) {
-    this.notas = notas;
+    this.modeloNFe = notas;
     const fiscal = notaFiscal.find((item) => item.nFE === notas);
     if (fiscal) {
       this.codigoNfe = fiscal.codigoNfe;
@@ -100,21 +110,21 @@ export class CreateChaveDto {
     }
   }
 
-  @ApiProperty({ minLength: 1, maxLength: 3 })
+  @ApiProperty({ format: '99' })
+  @IsNumberString()
+  @Transform(({ value }) => value.padStart(2, '0'))
   serie: number;
 
+  @ApiProperty({ format: '999.999.999' })
+  @IsNotEmpty()
+  @IsNumberString()
+  @Length(9, 9)
+  @Transform(({ value }) => value.padStart(9, '0'))
   @ApiProperty({ minLength: 1, maxLength: 20 })
   numeroNfe: number;
 
-  @ApiProperty({
-    enum: Object.values(tipDeEmissaoEnum),
-    enumName: 'tipDeEmissaoEnum',
-  })
-  tipo: tipDeEmissaoEnum;
-  codigoEmissao: number;
-
   setTipoEmissao(emissao: tipDeEmissaoEnum) {
-    this.tipo = emissao;
+    this.tipoEmissao = emissao;
     const tEmissao = tipoEmissao.find((item) => item.tipoEmissao === emissao);
     if (tEmissao) {
       this.codigoEmissao = tEmissao.codigoEmissao;
@@ -122,7 +132,15 @@ export class CreateChaveDto {
       this.codigoEmissao = 0; // Ou algum valor padrão caso o estado não seja encontrado
     }
   }
+  @ApiProperty({ enum: tipDeEmissaoEnum, enumName: 'TipoEmissaoEnum' })
+  @IsEnum(tipDeEmissaoEnum)
+  tipoEmissao: tipDeEmissaoEnum;
+  codigoEmissao: number;
 
-  @ApiProperty({ minLength: 1, maxLength: 8 })
-  codigoNumerico: number;
+  @ApiProperty({ format: '999.999' })
+  @IsNotEmpty()
+  @IsNumberString()
+  @Length(6, 6)
+  @Transform(({ value }) => value.padStart(6, '0'))
+  codNumerico: number;
 }
