@@ -89,7 +89,7 @@ export class CreateChaveDto {
 
   @ApiProperty({ format: '99.999.999/9999-99' })
   @Length(18, 18)
-  @Transform(({ value }) => value.replace(/[.-\/]/g, ''))
+  @Transform(({ value }) => value.replace(/\D/g, ''))
   cnpj: string;
 
   @ApiProperty({
@@ -112,6 +112,7 @@ export class CreateChaveDto {
 
   @ApiProperty({ format: '99' })
   @IsNumberString()
+  @IsNotEmpty()
   @Transform(({ value }) => value.padStart(2, '0'))
   serie: number;
 
@@ -120,7 +121,6 @@ export class CreateChaveDto {
   @IsNumberString()
   @Length(9, 9)
   @Transform(({ value }) => value.padStart(9, '0'))
-  @ApiProperty({ minLength: 1, maxLength: 20 })
   numeroNfe: number;
 
   setTipoEmissao(emissao: tipDeEmissaoEnum) {
